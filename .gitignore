@@ -1,0 +1,26 @@
+# Build artifacts
+/bin/
+/dist/
+/tmp/
+*.exe
+*.test
+*.out
+coverage.html
+
+# Go
+vendor/
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+*.swp
+.DS_Store
+
+# Local secrets (keep the committed YAML files free of real keys)
+.env
+.env.*
+
+# Runtime
+*.log
+data/
