@@ -1,0 +1,67 @@
+app_name: ragentgo
+slug: ragentgo
+environment: development
+host: 0.0.0.0
+port: "8080"
+store: pgvector
+db_schema: public
+dsn: "postgres://ragentgo:ragentgo@localhost:5432/ragentgo?sslmode=disable"
+
+ai_api_url: "http://localhost:8000/v1"
+ai_api_key: ""
+
+database:
+  url: "postgres://ragentgo:ragentgo@localhost:5432/ragentgo?sslmode=disable"
+  dimension: 1536
+
+embedding:
+  provider: openai-compat
+  model: text-embedding-3-small
+  base_url: "http://localhost:8000/v1"
+  dimension: 1536
+  max_concurrency: 4
+  timeout_seconds: 60
+
+llm:
+  provider: openai-compat
+  model: gpt-4.1-mini
+  base_url: "http://localhost:8000/v1"
+  timeout_seconds: 120
+
+retrieval:
+  top_k: 5
+  min_score: 0.0
+  hybrid: false
+
+cache:
+  answer_ttl_seconds: 3600
+
+chunking:
+  strategy: recursive
+  size: 800
+  overlap: 120
+
+vector:
+  index: hnsw
+  distance: cosine
+
+cors:
+  allowed_origins:
+    - "*"
+
+rate_limiter:
+  max_requests: 120
+  interval_seconds: 60
+
+security:
+  max_document_bytes: 8388608
+  max_query_chars: 8000
+  allow_private_urls: false
+
+crawler:
+  max_pages: 40
+  max_depth: 3
+  delay_ms: 400
+  page_timeout_seconds: 45
+  challenge_wait_seconds: 20
+  headless: true

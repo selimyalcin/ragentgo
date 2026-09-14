@@ -1,0 +1,76 @@
+app_name: ragentgo
+slug: ragentgo
+environment: local
+host: 0.0.0.0
+port: "8080"
+store: pgvector
+db_schema: public
+dsn: "postgres://ragentgo:ragentgo@localhost:5432/ragentgo?sslmode=disable"
+
+# Chat: Hugging Face Inference (DeepSeek). Embeddings: multilingual-e5-small
+# via hf-inference feature-extraction (OpenAI /v1/embeddings is 404 on the router).
+ai_api_url: "https://router.huggingface.co/v1"
+ai_api_key: "hf_..."
+
+database:
+  url: "postgres://ragentgo:ragentgo@localhost:5432/ragentgo?sslmode=disable"
+  dimension: 384
+
+embedding:
+  provider: huggingface
+  model: intfloat/multilingual-e5-small
+  base_url: "https://router.huggingface.co/hf-inference"
+  api_key: "hf_..."
+  dimension: 384
+  max_input_tokens: 512
+  max_concurrency: 4
+  timeout_seconds: 60
+
+llm:
+  provider: openai-compat
+  # 552B MoE backbone / 763B with vision encoder. Chat only — not an embedder.
+  model: deepseek-ai/DeepSeek-V4.1-Flash:novita
+  base_url: "https://router.huggingface.co/v1"
+  api_key: "hf_..."
+  timeout_seconds: 300
+  max_tokens: 8192
+
+retrieval:
+  top_k: 10
+  min_score: 0.0
+  hybrid: true
+
+cache:
+  answer_ttl_seconds: 3600
+
+chunking:
+  strategy: recursive
+  size: 400
+  overlap: 60
+
+vector:
+  index: hnsw
+  distance: cosine
+
+cors:
+  allowed_origins:
+    - "*"
+
+rate_limiter:
+  max_requests: 120
+  interval_seconds: 60
+
+security:
+  max_document_bytes: 8388608
+  max_query_chars: 8000
+  allow_private_urls: false
+  allowed_hosts: []
+
+crawler:
+  max_pages: 40
+  max_depth: 3
+  delay_ms: 400
+  page_timeout_seconds: 45
+  challenge_wait_seconds: 20
+  headless: true
+  chrome_path: ""
